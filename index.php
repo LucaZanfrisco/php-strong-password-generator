@@ -1,11 +1,23 @@
 <?php
 // Inclusione dei vari file PHP
 require __DIR__ ."/functions.php";
+include __DIR__ ."/session.php";
 
+$error = '';
 // MAIN
-$len = $_GET["length"];
-$password = generaPassword($len);
-
+if(!empty($_GET["length"])){
+    $len = $_GET['length'];
+    $password = generaPassword($len);
+    $_SESSION["password"] = $password;
+    
+    if($password !== 'Error'){
+        header("Location: ./password.php");
+        $error = '';
+    } else {
+        $error = 'Lughezza massima 24';
+    }
+    
+}
 ?>
 
 <!DOCTYPE html>
@@ -26,8 +38,9 @@ $password = generaPassword($len);
         <button type="submit">Genera</button>
     </form>
     <div>
-         Password: <span class="password"><?php echo $password ?></span>
+        <?php echo $error ?>
     </div>
+    
 </body>
 
 </html>
